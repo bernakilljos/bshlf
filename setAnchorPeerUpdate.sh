@@ -34,11 +34,11 @@ infoln "Fetching the most recent configuration block for the channel"
 export CORE_PEER_LOCALMSPID="Org1MSP"
 export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
 export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
-export CORE_PEER_ADDRESS=localhost:7051
+export CORE_PEER_ADDRESS=localhost:7071
 
 pushd channel-artifacts
 set -x
-peer channel fetch config config_block.pb -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com -c $CHANNEL_NAME --tls --cafile "$ORDERER_CA"
+peer channel fetch config config_block.pb -o localhost:7070 --ordererTLSHostnameOverride orderer.example.com -c $CHANNEL_NAME --tls --cafile "$ORDERER_CA"
 { set +x; } 2>/dev/null
 
 
@@ -74,7 +74,7 @@ configtxlator proto_encode --input config_update_in_envelope.json --type common.
 
 # Anchor peer set for org1 on channel
 infoln "Anchor peer set for org1 on channel"
-peer channel update -f Org1MSPAnchor.tx -c "${CHANNEL_NAME}" -o localhost:7050  --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA"
+peer channel update -f Org1MSPAnchor.tx -c "${CHANNEL_NAME}" -o localhost:7070  --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA"
 popd
 
 
@@ -89,11 +89,11 @@ infoln "Fetching the most recent configuration block for the channel"
 export CORE_PEER_LOCALMSPID="Org2MSP"
 export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
 export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
-export CORE_PEER_ADDRESS=localhost:9051
+export CORE_PEER_ADDRESS=localhost:8011
 
 pushd channel-artifacts
 set -x
-peer channel fetch config config_block.pb -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com -c $CHANNEL_NAME --tls --cafile "$ORDERER_CA"
+peer channel fetch config config_block.pb -o localhost:7070 --ordererTLSHostnameOverride orderer.example.com -c $CHANNEL_NAME --tls --cafile "$ORDERER_CA"
 { set +x; } 2>/dev/null
 
 
@@ -129,5 +129,5 @@ configtxlator proto_encode --input config_update_in_envelope.json --type common.
 
 # Anchor peer set for org2 on channel
 infoln "Anchor peer set for org2 on channel"
-peer channel update -f Org2MSPAnchor.tx -c "${CHANNEL_NAME}" -o localhost:7050  --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA"
+peer channel update -f Org2MSPAnchor.tx -c "${CHANNEL_NAME}" -o localhost:7070  --ordererTLSHostnameOverride orderer.example.com --tls --cafile "$ORDERER_CA"
 popd
