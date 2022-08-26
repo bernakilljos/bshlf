@@ -20,7 +20,7 @@ export FABRIC_CFG_PATH=${PWD}/config
 # Chaincode config variable
 
 # CHANNEL_NAME="mychannel"
-CC_NAME="member"
+CC_NAME="basic"
 CC_SRC_PATH="./chaincode/asset-transfer-basic/chaincode"
 CC_RUNTIME_LANGUAGE="golang"
 CC_VERSION="1"
@@ -119,21 +119,72 @@ cat log.txt
 
 peer lifecycle chaincode querycommitted --channelID $CHANNEL_NAME --name ${CC_NAME} --cafile $ORDERER_CA
 
-## cc chk
+
 ## TEST1 : Invoking the chaincode
 infoln "TEST1 : Invoking the chaincode"
 set -x
-peer chaincode invoke -o localhost:7070 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} $PEER_CONN_PARMS -c '{"function":"InitLedger","Args":[]}' >&log.txt
+peer chaincode invoke -o localhost:7070 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} $PEER_CONN_PARMS -c '{"function":"memberc", "Args":["1", "abc", "하이퍼", "123", "EthereumKey", "2022-08-26"]}' >&log.txt
 { set +x; } 2>/dev/null
 cat log.txt
 sleep 3
 
-## TEST2 : Query the chaincode
-
-infoln "TEST2 : Query the chaincode"
+## TEST2 : Invoking the chaincode
+infoln "TEST2 : Invoking the chaincode"
 set -x
-peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"Args":["GetAllAssets"]}' >&log.txt
+peer chaincode invoke -o localhost:7070 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} $PEER_CONN_PARMS -c '{"function":"memberc", "Args":["2", "abab", "패브릭", "321", "EthereumKey2", "2022-08-26"]}' >&log.txt
+{ set +x; } 2>/dev/null
+cat log.txt
+sleep 3
+
+## TEST3 : Invoking the chaincode
+infoln "TEST3 : Invoking the chaincode"
+set -x
+peer chaincode invoke -o localhost:7070 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} $PEER_CONN_PARMS -c '{"Args":["memberu", "2", "패브릭2", "333", "EthereumKey3"]}' >&log.txt
+{ set +x; } 2>/dev/null
+cat log.txt
+sleep 3
+
+
+## TEST4 : Query the chaincode
+
+infoln "TEST4 : Query the chaincode"
+set -x
+peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"Args":["query","1"]}' >&log.txt
 { set +x; } 2>/dev/null
 cat log.txt
 
+## TEST5 : Query the chaincode
+
+infoln "TEST5 : Query the chaincode"
+set -x
+peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"Args":["query","2"]}' >&log.txt
+{ set +x; } 2>/dev/null
+cat log.txt
+
+## TEST6 : Invoking the chaincode
+
+infoln "TEST6 : Invoking the chaincode"
+set -x
+peer chaincode invoke -o localhost:7070 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} $PEER_CONN_PARMS -c '{"Args":["memberd", "1"]}' >&log.txt
+{ set +x; } 2>/dev/null
+cat log.txt
+sleep 3
+
+## TEST7 : Invoking the chaincode
+
+infoln "TEST7 : Invoking the chaincode"
+set -x
+peer chaincode invoke -o localhost:7070 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} $PEER_CONN_PARMS -c '{"Args":["memberd", "2"]}' >&log.txt
+{ set +x; } 2>/dev/null
+cat log.txt
+sleep 3
+
+
+## TEST8 : Query the chaincode
+
+infoln "TEST5 : Query the chaincode"
+set -x
+peer chaincode query -C $CHANNEL_NAME -n ${CC_NAME} -c '{"Args":["query","2"]}' >&log.txt
+{ set +x; } 2>/dev/null
+cat log.txt
 

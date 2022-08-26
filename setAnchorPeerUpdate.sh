@@ -53,7 +53,7 @@ jq '.data.data[0].payload.data.config' config_block.json > config.json
 set -x
 infoln "Modify the configuration to append the anchor peer"
 Modify the configuration to append the anchor peer 
-jq '.channel_group.groups.Application.groups.Org1MSP.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "peer0.org1.example.com","port": 7051}]},"version": "0"}}' config.json > modified_config.json
+jq '.channel_group.groups.Application.groups.Org1MSP.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "peer0.org1.example.com","port": 7071}]},"version": "0"}}' config.json > modified_config.json
 { set +x; } 2>/dev/null
 
 
@@ -108,7 +108,7 @@ jq '.data.data[0].payload.data.config' config_block.json > config.json
 set -x
 infoln "Modify the configuration to append the anchor peer"
 Modify the configuration to append the anchor peer 
-jq '.channel_group.groups.Application.groups.Org2MSP.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "peer0.org2.example.com","port": 9051}]},"version": "0"}}' config.json > modified_config.json
+jq '.channel_group.groups.Application.groups.Org2MSP.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "peer0.org2.example.com","port": 8011}]},"version": "0"}}' config.json > modified_config.json
 { set +x; } 2>/dev/null
 
 

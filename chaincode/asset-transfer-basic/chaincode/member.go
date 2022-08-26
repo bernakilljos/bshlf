@@ -13,7 +13,7 @@ import (
 type SmartContract struct {
 }
 
-// Draw 구조체 정의
+// Member. 구조체 정의
 type Member struct {
 	MemberNo            string `json:"memberno"`
 	MemberId            string `json:"memberid"`
@@ -41,7 +41,6 @@ func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 	} else if fn == "memberu" { // 블록수정
 		return s.memberu(stub, args)
 	} else if fn == "memberd" { // 블록제거
-
 		return s.memberd(stub, args)
 	} else if fn == "query" { // ws 조회
 		return s.query(stub, args)
@@ -54,7 +53,7 @@ func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 // peer chaincode invoke -n Member -C mychannel -c '{"Args":[]}
 func (s *SmartContract) memberc(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 
-	if len(args) != 5 {
+	if len(args) != 6 {
 		return shim.Error("Incorrect number of argument. Expecting 6")
 	}
 
@@ -86,7 +85,7 @@ func (s *SmartContract) memberu(stub shim.ChaincodeStubInterface, args []string)
 		return shim.Error("Requested member id is missing")
 	}
 
-	var member = Member{MemberNo: args[0], MemberName: args[1], MemberPWD: args[2], MemberToEthereumKey: args[3]}
+	var member = Member{MemberId: args[0], MemberName: args[1], MemberPWD: args[2], MemberToEthereumKey: args[3]}
 
 	memberAsBytes, _ = json.Marshal(member)
 	stub.PutState(args[0], memberAsBytes)
@@ -99,7 +98,7 @@ func (s *SmartContract) memberu(stub shim.ChaincodeStubInterface, args []string)
 func (s *SmartContract) memberd(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 
 	if len(args) != 1 {
-		return shim.Error("Incorrect number of argument. Expecting 2")
+		return shim.Error("Incorrect number of argument. Expecting 1")
 	}
 
 	memberAsBytes, _ := stub.GetState(args[0])
@@ -117,13 +116,13 @@ func (s *SmartContract) memberd(stub shim.ChaincodeStubInterface, args []string)
 func (s *SmartContract) query(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 
 	if len(args) != 1 {
-		return shim.Error("Incorrect number of argument. Expecting 2")
+		return shim.Error("Incorrect number of argument. Expecting 1")
 	}
 
 	// World State 조회
 	memberAsBytes, _ := stub.GetState(args[0])
 	if memberAsBytes == nil {
-		return shim.Error("Requested draw id is missing")
+		return shim.Error("Requested member id is missing")
 	}
 	return shim.Success(memberAsBytes)
 }
